@@ -42,10 +42,10 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
         Route::post('close', [RoomController::class, 'close']);
         Route::prefix('control')->group(function(){
             Route::get('', [AdminRoomController::class, 'index'])->name('control_room');
-            Route::post('store', [AdminRoomController::class, 'create'])->name('control_room');
-            Route::post('update', [AdminRoomController::class, 'update'])->name('control_room');
-            Route::get('room/{id}', [AdminRoomController::class, 'show'])->name('control_room');
-            Route::get('delete/{room}', [AdminRoomController::class, 'delete'])->name('control_room');
+            Route::post('store', [AdminRoomController::class, 'create'])->name('control_room_store');
+            Route::post('update', [AdminRoomController::class, 'update'])->name('control_room_update');
+            Route::get('room/{id}', [AdminRoomController::class, 'show'])->name('control_room_room');
+            Route::get('delete/{room}', [AdminRoomController::class, 'delete'])->name('control_room_delete');
         });
     });
     Route::prefix('invoices')->group(function(){

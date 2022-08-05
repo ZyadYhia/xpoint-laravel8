@@ -28,7 +28,7 @@ class UserController extends Controller
         //     $data['isSuperadmin'] = 0;
         // }
         $data['counter'] = Role::select('id')->where('name', 'counter')->first();
-        $data['admins'] = User::whereNot('role_id', $client->id)
+        $data['admins'] = User::where('role_id', '!=', $client->id)
             ->orderBy('id', 'DESC')
             ->get();
 

@@ -114,6 +114,7 @@ class RoomController extends Controller
                 Session::flash('invoice', 'success');
             } else {
                 Session::flash('error', 'Wrong Opening User');
+                return back();
             }
         }
 

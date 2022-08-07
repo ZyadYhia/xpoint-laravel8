@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'uploads'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,6 +29,11 @@ return [
     */
 
     'disks' => [
+
+        'uploads' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+        ],
 
         'local' => [
             'driver' => 'local',

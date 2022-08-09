@@ -2,10 +2,12 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Mobile;
+use App\Models\Role;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -21,7 +23,9 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'user_name' => ['required', 'string', 'max:255', Rule::unique(User::class),],
             'email' => [
                 'required',
                 'string',
@@ -31,11 +35,19 @@ class CreateNewUser implements CreatesNewUsers
             ],
             'password' => $this->passwordRules(),
         ])->validate();
-
-        return User::create([
-            'name' => $input['name'],
+        $role = Role::select('id')->where('name', 'client')->first();
+        $user = User::create([
+            'first_name' => $input['first_name'],
+            'last_name' => $input['last_name'],
+            'user_name' => $input['user_name'],
+            'role_id' => $role->id,
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+        Mobile::create([
+            'name' => $input['mobile'],
+            'user_id' => $user->id
+        ]);
+        return $user;
     }
 }

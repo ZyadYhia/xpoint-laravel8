@@ -20,6 +20,7 @@ return [
     'first_name' => 'First Name',
     'last_name' => 'Last Name',
     'user_name' => 'User Name',
+    'mobile' => 'Mobile',
     'email' => 'E-mail',
     'password' => 'Password',
     'password_confirm' => 'Confirm Password',

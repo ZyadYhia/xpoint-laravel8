@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Web\Admin\ReportsController;
 use App\Http\Controllers\Web\Admin\RoomController as AdminRoomController;
+use App\Http\Controllers\Web\Client\ClientController;
 use App\Http\Controllers\Web\Client\HomeController as ClientHomeController;
 use App\Http\Controllers\Web\Client\InvoiceController;
 use App\Http\Controllers\Web\Client\RoomController;
@@ -36,6 +37,15 @@ Route::prefix('dashboard')->middleware(['auth', 'canEnterDashboard', 'verified']
         Route::get('remove-verification/{id}', [UserController::class, 'removeVerify']);
         Route::get('apply-verification/{id}', [UserController::class, 'applyVerify']);
         Route::post('add-user', [UserController::class, 'store'])->name('dashboard_add_users');
+    });
+    Route::prefix('/clients')->group(function () {
+        Route::get('', [ClientController::class, 'index'])->name('dashboard_clients');
+        Route::get('promote/{id}', [ClientController::class, 'promote']);
+        Route::get('demote/{id}', [ClientController::class, 'demote']);
+        Route::get('delete/{user}', [ClientController::class, 'delete']);
+        Route::get('remove-verification/{id}', [ClientController::class, 'removeVerify']);
+        Route::get('apply-verification/{id}', [ClientController::class, 'applyVerify']);
+        Route::post('add-client', [ClientController::class, 'store'])->name('dashboard_add_clients');
     });
     Route::prefix('/rooms')->group(function () {
         Route::post('open', [RoomController::class, 'open']);

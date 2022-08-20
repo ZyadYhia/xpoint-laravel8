@@ -55,6 +55,7 @@
                                             <th>ID</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
+                                            <th>Mobile</th>
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Verified</th>
@@ -67,6 +68,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $client->first_name }}</td>
                                                 <td>{{ $client->last_name }}</td>
+                                                <td>{{ $client->mobile }}</td>
                                                 <td>{{ $client->email }}</td>
                                                 <td>{{ $client->role->name }}</td>
                                                 <td>
@@ -80,7 +82,8 @@
                                                     @if ($client->role->name !== 'client')
                                                         <a data-swal-toast-template='#demote-template'
                                                             href="{{ url("dashboard/clients/demote/$client->id") }}"
-                                                            class="btn btn-warning btn-sm @if (Auth::user()->id == $client->id) dem @endif "
+                                                            class="btn btn-warning btn-sm"
+                                                            {{-- class="btn btn-warning btn-sm @if (Auth::user()->id == $client->id) dem @endif " --}}
                                                             @popper(Demote)>
                                                             <i class="fas fa-level-down-alt"></i>
                                                         </a>

@@ -6,7 +6,6 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Mobile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -49,12 +48,9 @@ class ClientController extends Controller
             'last_name' => $request->last_name,
             'user_name' => $request->user_name,
             'email' => $request->email,
+            'mobile' => $request->mobile,
             'password' => Hash::make($request->password),
             'role_id' => $role
-        ]);
-        Mobile::create([
-            'name' => $request->mobile,
-            'user_id' => $user->id
         ]);
         Session::flash('msg', 'User Created Successfuly');
         return back();
@@ -99,7 +95,7 @@ class ClientController extends Controller
     public function delete(User $user, Request $request)
     {
         try {
-            $user->mobiles()->delete();
+            //$user->mobiles()->delete();
             $user->delete();
             $msg = 'Client deleted successfully';
             Session::flash('msg', $msg);

@@ -1,14 +1,16 @@
 <?php
 
+use App\Models\User;
+use App\Models\Mobile;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Web\Admin\ReportsController;
-use App\Http\Controllers\Web\Admin\RoomController as AdminRoomController;
-use App\Http\Controllers\Web\Client\ClientController;
-use App\Http\Controllers\Web\Client\HomeController as ClientHomeController;
-use App\Http\Controllers\Web\Client\InvoiceController;
 use App\Http\Controllers\Web\Client\RoomController;
 use App\Http\Controllers\Web\Client\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\Admin\ReportsController;
+use App\Http\Controllers\Web\Client\ClientController;
+use App\Http\Controllers\Web\Client\InvoiceController;
+use App\Http\Controllers\Web\Admin\RoomController as AdminRoomController;
+use App\Http\Controllers\Web\Client\HomeController as ClientHomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +73,17 @@ Route::prefix('dashboard')->middleware(['auth', 'canEnterDashboard', 'verified']
     Route::post('add-user', [UserController::class, 'store']);
     Route::get('/room/{room}', [RoomController::class, 'index']);
 });
+
+Route::get('update-mobiles', function () {
+    $users = User::get();
+    foreach ($users as $user) {
+        $mobiles = Mobile::get();
+        foreach ($mobiles as $mobile) {
+            if ($mobile->user_id == $user->id) {
+                $user->mobile = $mobile->name;
+                $user->save();
+            }
+        }
+    }
+    return 'done';
+})->middleware('isSuperadmin');

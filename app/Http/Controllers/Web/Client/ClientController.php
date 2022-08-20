@@ -99,7 +99,7 @@ class ClientController extends Controller
             $user->delete();
             $msg = 'Client deleted successfully';
             Session::flash('msg', $msg);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $msg = "Client can't be deleted";
             Session::flash('error', $msg);
         }

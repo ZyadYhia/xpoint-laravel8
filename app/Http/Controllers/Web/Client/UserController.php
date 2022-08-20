@@ -103,7 +103,7 @@ class UserController extends Controller
             $user->delete();
             $msg = 'Admin deleted successfully';
             Session::flash('msg', $msg);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $msg = "Admin can't be deleted";
             Session::flash('error', $msg);
         }

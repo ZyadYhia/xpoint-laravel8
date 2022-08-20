@@ -18,6 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $client = Role::where('name', 'client')->first();
+        $superadmin = Role::where('name', 'superadmin')->first();
         // $data['counters'] = User::where('role_id', $counter->id)->get();
         // if (Auth::user()->role->name == 'superadmin') {
         //     $admin = Role::where('name', 'admin')->first();
@@ -27,7 +28,7 @@ class UserController extends Controller
         //     $data['isSuperadmin'] = 0;
         // }
         $data['counter'] = Role::select('id')->where('name', 'counter')->first();
-        $data['admins'] = User::where('role_id', '!=', $client->id)
+        $data['admins'] = User::where('role_id', '!=', $client->id)->where('role_id', '!=', $superadmin->id)
             ->orderBy('id', 'DESC')
             ->get();
 
@@ -93,7 +94,12 @@ class UserController extends Controller
     public function delete(User $user, Request $request)
     {
         try {
-            //$user->mobiles()->delete();
+            $super = Role::where('name', 'superadmin')->first()->id;
+            if ($user->role_id == $super and Auth::user()->id !== $super) {
+                $msg = "Admin can't be deleted";
+                Session::flash('error', $msg);
+                return back();
+            }
             $user->delete();
             $msg = 'Admin deleted successfully';
             Session::flash('msg', $msg);
@@ -101,7 +107,7 @@ class UserController extends Controller
             $msg = "Admin can't be deleted";
             Session::flash('error', $msg);
         }
-        return  back();
+        return back();
     }
     public function removeVerify($id, Request $request)
     {

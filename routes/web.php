@@ -74,16 +74,16 @@ Route::prefix('dashboard')->middleware(['auth', 'canEnterDashboard', 'verified']
     Route::get('/room/{room}', [RoomController::class, 'index']);
 });
 
-Route::get('update-mobiles', function () {
-    $users = User::get();
-    foreach ($users as $user) {
-        $mobiles = Mobile::get();
-        foreach ($mobiles as $mobile) {
-            if ($mobile->user_id == $user->id) {
-                $user->mobile = $mobile->name;
-                $user->save();
-            }
-        }
-    }
-    return 'done';
-})->middleware('isSuperadmin');
+// Route::get('update-mobiles', function () {
+//     $users = User::get();
+//     foreach ($users as $user) {
+//         $mobiles = Mobile::get();
+//         foreach ($mobiles as $mobile) {
+//             if ($mobile->user_id == $user->id) {
+//                 $user->mobile = $mobile->name;
+//                 $user->save();
+//             }
+//         }
+//     }
+//     return 'done';
+// })->middleware('isSuperadmin');

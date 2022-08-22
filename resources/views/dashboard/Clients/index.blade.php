@@ -69,7 +69,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $client->first_name }}</td>
                                                 <td>{{ $client->last_name }}</td>
-                                                <td>{{ $client->username }}</td>
+                                                <td>{{ $client->user_name }}</td>
                                                 <td>{{ $client->mobile }}</td>
                                                 <td>{{ $client->email }}</td>
                                                 <td>{{ $client->role->name }}</td>

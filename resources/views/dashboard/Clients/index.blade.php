@@ -55,6 +55,7 @@
                                             <th>ID</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
+                                            <th>Username</th>
                                             <th>Mobile</th>
                                             <th>Email</th>
                                             <th>Role</th>
@@ -68,6 +69,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $client->first_name }}</td>
                                                 <td>{{ $client->last_name }}</td>
+                                                <td>{{ $client->username }}</td>
                                                 <td>{{ $client->mobile }}</td>
                                                 <td>{{ $client->email }}</td>
                                                 <td>{{ $client->role->name }}</td>

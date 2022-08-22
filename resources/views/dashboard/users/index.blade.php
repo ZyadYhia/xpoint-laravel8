@@ -55,6 +55,7 @@
                                             <th>ID</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
+                                            <th>Username</th>
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Verified</th>
@@ -67,6 +68,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $admin->first_name }}</td>
                                                 <td>{{ $admin->last_name }}</td>
+                                                <td>{{ $admin->user_name }}</td>
                                                 <td>{{ $admin->email }}</td>
                                                 <td>{{ $admin->role->name }}</td>
                                                 <td>

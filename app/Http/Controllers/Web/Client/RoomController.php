@@ -33,11 +33,15 @@ class RoomController extends Controller
             Session::flash('error', 'Validations Error');
             return back()->withErrors($validator->errors());
         }
-        if ($request->username) {
-            $user = User::where('user_name', $request->username)->first();
-        } else if ($request->email) {
-            $user = User::where('user_name', $request->username)->first();
+        $user = User::where('user_name', $request->username)->first();
+        if ($user == null) {
+            $user = User::where('email', $request->username)->first();
         }
+        // if ($request->username) {
+        //     $user = User::where('user_name', $request->username)->first();
+        // } else if ($request->email) {
+        //     $user = User::where('user_name', $request->username)->first();
+        // }
         if (!$user) {
             Session::flash('error', 'User Not Found');
             return back();
@@ -71,11 +75,15 @@ class RoomController extends Controller
         if ($validator->failed()) {
             return back();
         }
-        if ($request->username) {
-            $user = User::where('user_name', $request->username)->first();
-        } else if ($request->email) {
-            $user = User::where('user_name', $request->username)->first();
+        $user = User::where('user_name', $request->username)->first();
+        if ($user == null) {
+            $user = User::where('email', $request->username)->first();
         }
+        // if ($request->username) {
+        //     $user = User::where('user_name', $request->username)->first();
+        // } else if ($request->email) {
+        //     $user = User::where('user_name', $request->username)->first();
+        // }
         if (!$user) {
             Session::flash('error', 'Username or Email Incorrect');
             return back();
@@ -89,7 +97,7 @@ class RoomController extends Controller
             $pivotRow = $room->users()->where('user_id', $user->id)->first();
             if ($pivotRow && $room->users[0]->id == $user->id) {
                 // if ($pivotRow->pivot->players == 'single') {
-                $multiCheck = ($pivotRow->pivot->players == 'single')? 1 : $room->multi ;
+                $multiCheck = ($pivotRow->pivot->players == 'single') ? 1 : $room->multi;
                 $cost = $this->calc_cost($room->opened_at, $room->cost, $multiCheck);
                 // $points = $this->calculate_points($cost, $room->discount);
                 // $points = $this->calculate_points($cost->opened_at, $room->cost, $room->discount);

@@ -7,12 +7,13 @@ use App\Models\Room;
 use App\Models\User;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use PhpParser\Parser\Multiple;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Web\Client\InvoiceController;
-use PhpParser\Parser\Multiple;
 
 class RoomController extends Controller
 {
@@ -94,7 +95,7 @@ class RoomController extends Controller
         }
         $room = Room::where('id', $request->room)->first();
         if ($room->status == 'busy') {
-            $pivotRow = $room->users()->where('user_id', $user->id)->first();
+            $pivotRow = $room->users()->where('room_id', $room->id)->first();
             if ($pivotRow && $room->users[0]->id == $user->id) {
                 // if ($pivotRow->pivot->players == 'single') {
                 $multiCheck = ($pivotRow->pivot->players == 'single') ? 1 : $room->multi;
@@ -109,9 +110,24 @@ class RoomController extends Controller
                 $points = $this->calculate_points($cost, $room->discount);
                 $time_now = Carbon::now();
                 $time_mins = $time_now->diffInMinutes($room->opened_at);
-                if ($user->user_name !== 'counter') {
-                    $user->points = $user->points + $points;
-                }
+                $user->points = $user->points + $points;
+                $room->status = 'available';
+                $room->opened_at = null;
+                $user->save();
+                $room->save();
+                $room->users()->detach();
+                InvoiceController::store($user->id, $room, $cost, $time_mins);
+                Session::flash('msg', 'Room Closed Successfuly');
+                Session::flash('invoice', 'success');
+            } elseif ($pivotRow && $room->users[0]->id !== $user->id  && $user->role->name !== 'client') {
+                $multiCheck = ($pivotRow->pivot->players == 'single') ? 1 : $room->multi;
+                $cost = $this->calc_cost($room->opened_at, $room->cost, $multiCheck);
+                // $points = $this->calculate_points($cost, $room->discount);
+                $time_now = Carbon::now();
+                $time_mins = $time_now->diffInMinutes($room->opened_at);
+                // if ($user->user_name !== 'counter') {
+                //     $user->points = $user->points + $points;
+                // }
                 $room->status = 'available';
                 $room->opened_at = null;
                 $user->save();
